@@ -1,4 +1,5 @@
 import 'package:better_mood/Pages/signup_page.dart';
+import 'package:better_mood/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
+  //get auth service
+  final authService = AuthService();
+
+  //text controllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  //login button pressed
+  void login() async{
+    //prepare data
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    //attempt login
+    try{
+      await authService.signInWithEmailPassword(email, password);
+    }
+
+    catch(e){
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,9 +102,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         
+                        //email text field
                         Padding(
                           padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 16.0),
                           child: TextField(
+                            controller: _emailController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.email),
                               hintText: 'your@mail.com',
@@ -109,10 +138,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                                   
+
+                        //password text field           
                         Padding(
                           padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 16.0),
                           child: TextField(
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.lock),
@@ -135,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 5.0),
                           child: TextButton(
-                            onPressed: (){}, 
+                            onPressed: login, 
                             style: TextButton.styleFrom(
                               fixedSize: Size(290, 50),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),

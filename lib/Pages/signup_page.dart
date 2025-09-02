@@ -1,4 +1,6 @@
 import 'package:better_mood/Pages/login_page.dart';
+import 'package:better_mood/Theme/Text%20Theme/text_theme.dart';
+import 'package:better_mood/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -12,6 +14,41 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPagState extends State<SignupPage> {
 
+  //get auth service
+  final authService = AuthService();
+
+  //text controllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  //sign up button pressed
+  Future<void> _signUp() async{
+    //prepare data
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    //matching pass check
+    if(password != confirmPassword){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
+      return;
+    }
+
+    //attempt sign up
+    try{
+      await authService.signUpWithEmailPassword(email, password);
+
+      //pop this sign up page
+      Navigator.pop(context);
+    }
+    catch(e){
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: $e")));
+
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +76,9 @@ class _SignupPagState extends State<SignupPage> {
                         
                         SizedBox(height: 60.0,),
                          Text('Sign up', 
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 2.0,
+                                  style: BTextTheme.lightTextTheme.headlineLarge?.copyWith(
                                     color: Color(0xFFE0C995),
-                                  ),
+                                  )
                                   
                             ),
                           
@@ -74,9 +108,11 @@ class _SignupPagState extends State<SignupPage> {
                           ),
                         ),
                         
+                        //email text field
                         Padding(
                           padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 16.0),
                           child: TextField(
+                            controller: _emailController,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.email),
                               hintText: 'your@mail.com',
@@ -108,14 +144,40 @@ class _SignupPagState extends State<SignupPage> {
                             ),
                           ),
                         ),
-                                   
+
+                        //pass text field           
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 16.0),
+                          padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 10.0),
                           child: TextField(
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.lock),
                               hintText: 'Enter your password',
+                              filled: true,
+                              fillColor: Color(0xFFD9D9D9),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(color: Color(0xFFD9D9D9),)
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(color: Color(0xFFE0C995),)
+                              )
+                            ),
+                          ),
+                        ),
+
+                        
+                        //confirm pass text field           
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 16.0),
+                          child: TextField(
+                            controller: _confirmPasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: 'Confirm your password',
                               filled: true,
                               fillColor: Color(0xFFD9D9D9),
                               enabledBorder: OutlineInputBorder(
@@ -134,7 +196,7 @@ class _SignupPagState extends State<SignupPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 5.0),
                           child: TextButton(
-                            onPressed: (){}, 
+                            onPressed: _signUp, 
                             style: TextButton.styleFrom(
                               fixedSize: Size(290, 50),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),
