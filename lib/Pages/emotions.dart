@@ -1,10 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:better_mood/Theme/Text Theme/text_theme.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class EmotionsPage extends StatefulWidget {
-  final Function(String) onMoodLogged;
+  final Function(String, Color) onMoodLogged;
   const EmotionsPage({super.key, required this.onMoodLogged});
 
   @override
@@ -32,8 +33,26 @@ class _EmotionsPageState extends State<EmotionsPage> {
     }
   }
 
+  Color getMoodColor(int value, BuildContext context) {
+    switch (value) {
+      case 0:
+        return Theme.of(context).colorScheme.secondaryContainer; // very happy
+      case 1:
+        return Color(0xFFBAD491); // happy
+      case 2:
+        return Color(0xFFA5BBBD); // neutral
+      case 3:
+        return Theme.of(context).colorScheme.tertiaryContainer; // sad
+      case 4:
+        return Theme.of(context).colorScheme.error; // angry
+      default:
+        return Colors.grey;
+    }
+  }
+
   void _logMood() {
     String mood = getMoodName(_value.toInt());
+    Color moodColor = getMoodColor(_value.toInt(), context);
     
     // Show confirmation
     ScaffoldMessenger.of(context).showSnackBar(
@@ -44,8 +63,8 @@ class _EmotionsPageState extends State<EmotionsPage> {
       ),
     );
     
-    // Call the callback with mood name
-    widget.onMoodLogged(mood);
+    // Call the callback with mood name and color
+    widget.onMoodLogged(mood, moodColor);
     
     // Navigate back
     Navigator.pop(context);
@@ -55,12 +74,14 @@ class _EmotionsPageState extends State<EmotionsPage> {
     Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: Image.asset(
               'image/vhappy.png',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+              Icon(FontAwesomeIcons.faceLaugh, color: Colors.black45),
             ),
           ),
               
@@ -73,12 +94,14 @@ class _EmotionsPageState extends State<EmotionsPage> {
     Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: Image.asset(
               'image/happy.png',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+              Icon(FontAwesomeIcons.faceSmileBeam, color: Colors.black45),
             ),
           ),
               
@@ -92,12 +115,14 @@ class _EmotionsPageState extends State<EmotionsPage> {
     Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: Image.asset(
               'image/neutral.png',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+              Icon(FontAwesomeIcons.faceMeh, color: Colors.black45),
             ),
           ),
               
@@ -110,12 +135,14 @@ class _EmotionsPageState extends State<EmotionsPage> {
     Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: Image.asset(
               'image/sad.png',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+              Icon(FontAwesomeIcons.faceFrown, color: Colors.black45),
             ),
           ),
               
@@ -128,12 +155,14 @@ class _EmotionsPageState extends State<EmotionsPage> {
     Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200,
             height: 200,
             child: Image.asset(
               'image/angry.png',
               fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+              Icon(FontAwesomeIcons.faceAngry, color: Colors.black45),
             ),
           ),
               
@@ -154,7 +183,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
       Color(0xFFBAD491), // happy 
       Color(0xFFA5BBBD), // neutral 
       Theme.of(context).colorScheme.tertiaryContainer, // sad 
-      Color(0xFFFA5563), // angry 
+      Theme.of(context).colorScheme.error, // angry 
     ];
     
     return Scaffold(

@@ -8,9 +8,11 @@ class MoodLogTile extends StatelessWidget {
 
   final String date;
   final String mood;
-  final Function(BuildContext) onDelete;
+  final Color moodColor;
+  final Function(BuildContext)? onDelete;
+  final Function(BuildContext)? onUpdate;
 
-  const MoodLogTile({super.key, required this.date, required this.mood, required this.onDelete});
+  const MoodLogTile({super.key, required this.date, required this.mood, required this.moodColor, required this.onDelete, required this.onUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +22,20 @@ class MoodLogTile extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         children: [
+          //update slidable
+          SlidableAction(
+            onPressed: onUpdate,
+            icon: Icons.edit,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            foregroundColor: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+
+          //delete slidable
           SlidableAction(
             onPressed: onDelete,
             icon: Icons.delete,
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
             foregroundColor: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
@@ -33,7 +45,7 @@ class MoodLogTile extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondaryContainer,
+          color: moodColor,
           borderRadius: BorderRadius.circular(16),
         ),
                  child: Column(

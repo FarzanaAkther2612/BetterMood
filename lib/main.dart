@@ -1,5 +1,4 @@
 import 'package:better_mood/Pages/homepage.dart';
-import 'package:better_mood/Pages/login_page.dart';
 import 'package:better_mood/Theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

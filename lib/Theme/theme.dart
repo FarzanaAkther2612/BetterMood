@@ -7,11 +7,11 @@ ThemeData lightMode = ThemeData(
     scaffoldBackgroundColor: Color(0xFFEFEFEF),
     primaryColor: Color(0xFF769DA2),
     colorScheme: ColorScheme.light(
-      primaryContainer: Color(0xFFD0D1BC), // Muted blue-green
-      secondaryContainer: Color(0xFFF6C870), // Warm orange/peach
-      tertiaryContainer: Color(0xFFE8AFA1), // Light coral
-      surface: Color(0xFFEEECD8), // Light cream
-      error: Colors.red,
+      primaryContainer: Color(0xFFD0D1BC), 
+      secondaryContainer: Color(0xFFF6C870), 
+      tertiaryContainer: Color(0xFFE8AFA1), 
+      surface: Color(0xFFEEECD8), 
+      error: Color(0xFFFA5563),
     ),
     textTheme: BTextTheme.lightTextTheme,
 

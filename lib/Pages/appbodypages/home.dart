@@ -13,14 +13,36 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage> {
 
   List moodLogs = [
-    ["4 September, 2025", "Happy Mood"],
-    ["5 September, 2025", "Sad Mood"],
+    ["4 September, 2025", "Happy Mood", Color(0xFFBAD491)],
+    ["5 September, 2025", "Sad Mood", Color(0xFFA5BBBD)],
   ];
+  
 
+  //delete mood log function
   void deleteMoodLog(int index) {
     setState(() {
       moodLogs.removeAt(index);
     });
+  }
+
+  //update mood log function
+  void updateMoodLog(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmotionsPage(
+          onMoodLogged: (String newMood, Color moodColor) {
+            // Get current date
+            DateTime now = DateTime.now();
+            String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
+            
+            setState(() {
+              moodLogs[index] = [date, newMood, moodColor];
+            });
+          },
+        ),
+      ),
+    );
   }
 
   void _addMoodLog() {
@@ -28,13 +50,13 @@ class _UserHomePageState extends State<UserHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EmotionsPage(
-          onMoodLogged: (String mood) {
+          onMoodLogged: (String mood, Color moodColor) {
             // Get current date
             DateTime now = DateTime.now();
             String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
             
             setState(() {
-              moodLogs.insert(0, [date, mood]);
+              moodLogs.insert(0, [date, mood, moodColor]);
             });
           },
         ),
@@ -67,14 +89,16 @@ class _UserHomePageState extends State<UserHomePage> {
         child: Icon(Icons.add),
       ),
       
-      body: ListView.builder(
-        itemCount: moodLogs.length,
-        itemBuilder: (context, index) => MoodLogTile(
-          date: moodLogs[index][0],
-          mood: moodLogs[index][1],
-          onDelete: (context) => deleteMoodLog(index),
-        ),
-      ),
+       body: ListView.builder(
+         itemCount: moodLogs.length,
+         itemBuilder: (context, index) => MoodLogTile(
+           date: moodLogs[index][0],
+           mood: moodLogs[index][1],
+           moodColor: moodLogs[index][2],
+           onDelete: (context) => deleteMoodLog(index),
+           onUpdate: (context) => updateMoodLog(index),
+         ),
+       ),
       
     );
   }
