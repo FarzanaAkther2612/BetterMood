@@ -13,8 +13,8 @@ class BTextTheme{
       color: Colors.black,
     ),
     headlineMedium: GoogleFonts.albertSans(
-      fontSize: 20.0,
-      fontWeight: FontWeight.w500,
+      fontSize: 28.0,
+      fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
     headlineSmall: GoogleFonts.albertSans(
@@ -24,7 +24,7 @@ class BTextTheme{
     ),
     
     titleLarge: GoogleFonts.albertSans(
-      fontSize: 16.0,
+      fontSize: 20.0,
       fontWeight: FontWeight.w500,
       color: Colors.black,
     ),
@@ -56,7 +56,7 @@ class BTextTheme{
     ),
     
     labelLarge: GoogleFonts.albertSans(
-      fontSize: 14.0,
+      fontSize: 16.0,
       fontWeight: FontWeight.w500,
       color: Colors.black,
     ),

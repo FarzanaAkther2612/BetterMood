@@ -1,10 +1,11 @@
+import 'package:better_mood/Pages/homepage.dart';
 import 'package:better_mood/Pages/login_page.dart';
 import 'package:better_mood/Theme/theme.dart';
-import 'package:better_mood/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
   //supabase setup
   await Supabase.initialize(
     url: "https://fiyzqcwelgcnmzdemsoo.supabase.co", 
@@ -23,9 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
-      theme: BAppTheme.lightMode,
-      darkTheme:  BAppTheme.darkMode,
-      home: LoginPage(),
+      theme: lightMode,
+      darkTheme: darkMode,
+      home: Homepage(),
     );
   }
 }
