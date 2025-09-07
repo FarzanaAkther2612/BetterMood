@@ -17,7 +17,7 @@ class _UserHomePageState extends State<UserHomePage> {
   final moodDatabase = MoodDatabase();
   final authService = AuthService();
 
-  List moodLogs = [];
+ 
   
   //convert hex string to color
   Color hexToColor(String hexString) {
@@ -30,6 +30,7 @@ class _UserHomePageState extends State<UserHomePage> {
   //delete mood log 
   void deleteMoodLog(dynamic id) async{
     await moodDatabase.deleteMood(id);
+    
   }
 
   //update mood log 
@@ -38,9 +39,9 @@ class _UserHomePageState extends State<UserHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EmotionsPage(
-          onMoodLogged: (String mood, String moodHexColor) async{
+          onMoodLogged: (String mood, String moodHexColor, int moodValue) async{
             
-              await moodDatabase.updateMood(id, mood, moodHexColor);             
+              await moodDatabase.updateMood(id, mood, moodHexColor, moodValue);             
           },
         ),
       ),
@@ -52,12 +53,12 @@ class _UserHomePageState extends State<UserHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EmotionsPage(
-          onMoodLogged: (String mood, String moodHexColor) async{
+          onMoodLogged: (String mood, String moodHexColor, int moodValue) async{
             
             DateTime now = DateTime.now();
             String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
             
-              await moodDatabase.insertMood(mood, date, moodHexColor);
+              await moodDatabase.insertMood(mood, date, moodHexColor, moodValue);
             
           },
         ),

@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class EmotionsPage extends StatefulWidget {
-  final Function(String, String) onMoodLogged;
+  final Function(String, String, int) onMoodLogged;
 
   const EmotionsPage({super.key, required this.onMoodLogged});
 
@@ -48,6 +48,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
   void _logMood() {
     String mood = getMoodName(_value.toInt());
     String moodHexColor = getMoodColor(_value.toInt());
+    int moodValue = _value.toInt();
   
     ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -57,7 +58,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
                   ),
               );
   
-    widget.onMoodLogged(mood, moodHexColor);
+    widget.onMoodLogged(mood, moodHexColor, moodValue);
     
     Navigator.pop(context);
   }

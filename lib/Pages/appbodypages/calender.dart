@@ -1,5 +1,7 @@
-
+import 'package:better_mood/db/mood_database.dart';
 import 'package:flutter/material.dart';
+import 'package:better_mood/auth/auth_service.dart';
+import 'package:better_mood/component/heatmap.dart';
 
 class UserCalenderPage extends StatefulWidget {
   const UserCalenderPage({super.key});
@@ -9,13 +11,37 @@ class UserCalenderPage extends StatefulWidget {
 }
 
 class _UserCalenderPageState extends State<UserCalenderPage> {
+
+  final moodDatabase = MoodDatabase();
+  final authService = AuthService();
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Calender Page'),
+    return StreamBuilder(
+      stream: moodDatabase.moodsTable.stream(primaryKey: ['id']), 
+        builder: (context, snapshot){
+          if(!snapshot.hasData){
+            return Center(child: Text('Loading...'));
+          }
 
-      ),
-    );
+          final moods = snapshot.data!;
+
+          Map<DateTime, int> heatmapDatasets = {};
+
+          for (int i = 0; i < moods.length; i++) {
+          var mood = moods[i];
+          final createdAt = DateTime.parse(mood['created_at']);
+          final day = DateTime(createdAt.year, createdAt.month, createdAt.day);
+          final moodValue = mood['mood_value'];
+          
+          heatmapDatasets[day] = moodValue;
+        }
+          
+
+          return MyHeatmap(
+            datasets: heatmapDatasets);
+        },
+      );
   }
 }

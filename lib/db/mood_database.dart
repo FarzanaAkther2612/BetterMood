@@ -6,7 +6,7 @@ class MoodDatabase {
     final authService = AuthService();
 
     //insert
-    Future<void> insertMood(String moodName, String date, String moodColor) async{
+    Future<void> insertMood(String moodName, String date, String moodColor, int moodValue) async{
       final uid = authService.getUserUID();
 
       await moodsTable.insert({
@@ -14,15 +14,16 @@ class MoodDatabase {
         'mood_colour': moodColor,
         'date': date,
         'uid': uid,
-        
+        'mood_value': moodValue,
       });
     }
 
     //update
-    Future<void> updateMood(dynamic moodId, String moodName, String moodColor) async{
+    Future<void> updateMood(dynamic moodId, String moodName, String moodColor, int moodValue) async{
       await moodsTable.update({
         'mood_name': moodName,  
         'mood_colour': moodColor,
+        'mood_value': moodValue,
       }).eq('id', moodId);
     }
 

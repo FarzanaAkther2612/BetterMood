@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:better_mood/Theme/Text%20Theme/text_theme.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -12,9 +14,175 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Profile Page'),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+         
+          Row(
+            children: [
+              Padding(
+            padding: EdgeInsets.fromLTRB(20, 60, 20, 5),
+            child: Text("Profile", style: BTextTheme.lightTextTheme.headlineMedium),
+            ),
+            SizedBox(width: 200),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 60, 20, 5),
+              child: Icon(Icons.account_circle, color: Colors.black45, size: 35,),
+            ),
+            ],
+          ),
 
+          SizedBox(height: 50),
+          Expanded(
+            child: 
+            Container(
+              width: double.infinity,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(60),
+                ),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+
+                 Row(
+                  children: [
+                    Padding(
+                    padding: EdgeInsets.all(30),
+                    child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CircleAvatar(
+                      radius: 30,
+                    ),
+                    ),
+                    ),
+                    
+                    Text("user_email@gmail.com", style: BTextTheme.lightTextTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic)),
+                  ],
+                 ),
+                SizedBox(height: 15),
+
+                //entries log row
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 170,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("15", style: BTextTheme.lightTextTheme.headlineSmall),
+                          Text("Saved entries", style: BTextTheme.lightTextTheme.bodyMedium?.copyWith(color: Colors.black45)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 170,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("5", style: BTextTheme.lightTextTheme.headlineSmall),
+                          Text("Streak days", style: BTextTheme.lightTextTheme.bodyMedium?.copyWith(color: Colors.black45)),
+                        ],
+                      ),
+                    ),
+                  ]
+                  ),
+
+                  SizedBox(height: 30),
+
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Card(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Get help", style: BTextTheme.lightTextTheme.bodyLarge),
+                            Icon(FontAwesomeIcons.chevronRight, size: 16,),
+                          ],
+                        ),
+                        ),
+
+                        Divider(color: Colors.black45, indent: 15, endIndent: 15,),
+
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Privacy Policy", style: BTextTheme.lightTextTheme.bodyLarge),
+                            Icon(FontAwesomeIcons.chevronRight, size: 16,),
+                          ],
+                        ),
+                        ),
+
+                        Divider(color: Colors.black45, indent: 15, endIndent: 15,),
+
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Terms & Conditions", style: BTextTheme.lightTextTheme.bodyLarge),
+                            Icon(FontAwesomeIcons.chevronRight, size: 16,),
+                          ],
+                        ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ),
+
+                  //sign out button
+                  Padding(
+                          padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 5.0),
+                          child: TextButton(
+                            onPressed: (){}, 
+                            style: TextButton.styleFrom(
+                              fixedSize: Size(290, 50),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),
+                              backgroundColor: Color(0xFFE0C995),
+                              foregroundColor: Color(0xFFF7F2EF)
+                            ),
+                            child: Text('Sign out',
+                                        style: TextStyle(
+                                          
+                                          fontSize: 21.0,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.5,
+                                          wordSpacing: 2.0
+                                        ),
+                            )
+                            ),
+                        ),
+              ],
+            )
+            ),
+            ),
+
+        ],
       ),
     );
   }
