@@ -1,3 +1,5 @@
+import 'package:better_mood/auth/auth_service.dart';
+import 'package:better_mood/db/mood_database.dart';
 import 'package:flutter/material.dart';
 import 'package:better_mood/Theme/Text Theme/text_theme.dart';
 import 'package:better_mood/component/moodlog_tile.dart';
@@ -12,33 +14,33 @@ class UserHomePage extends StatefulWidget {
 
 class _UserHomePageState extends State<UserHomePage> {
 
-  List moodLogs = [
-    ["4 September, 2025", "Happy Mood", Color(0xFFBAD491)],
-    ["5 September, 2025", "Sad Mood", Color(0xFFA5BBBD)],
-  ];
-  
+  final moodDatabase = MoodDatabase();
+  final authService = AuthService();
 
-  //delete mood log function
-  void deleteMoodLog(int index) {
-    setState(() {
-      moodLogs.removeAt(index);
-    });
+  List moodLogs = [];
+  
+  //convert hex string to color
+  Color hexToColor(String hexString) {
+  final buffer = StringBuffer();
+  if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+  buffer.write(hexString.replaceFirst('#', ''));
+  return Color(int.parse(buffer.toString(), radix: 16));
+}
+
+  //delete mood log 
+  void deleteMoodLog(dynamic id) async{
+    await moodDatabase.deleteMood(id);
   }
 
-  //update mood log function
-  void updateMoodLog(int index) {
+  //update mood log 
+  void updateMoodLog(dynamic id) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EmotionsPage(
-          onMoodLogged: (String newMood, Color moodColor) {
-            // Get current date
-            DateTime now = DateTime.now();
-            String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
+          onMoodLogged: (String mood, String moodHexColor) async{
             
-            setState(() {
-              moodLogs[index] = [date, newMood, moodColor];
-            });
+              await moodDatabase.updateMood(id, mood, moodHexColor);             
           },
         ),
       ),
@@ -50,14 +52,13 @@ class _UserHomePageState extends State<UserHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => EmotionsPage(
-          onMoodLogged: (String mood, Color moodColor) {
-            // Get current date
+          onMoodLogged: (String mood, String moodHexColor) async{
+            
             DateTime now = DateTime.now();
             String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
             
-            setState(() {
-              moodLogs.insert(0, [date, mood, moodColor]);
-            });
+              await moodDatabase.insertMood(mood, date, moodHexColor);
+            
           },
         ),
       ),
@@ -75,6 +76,9 @@ class _UserHomePageState extends State<UserHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final uid = authService.getUserUID();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -89,16 +93,35 @@ class _UserHomePageState extends State<UserHomePage> {
         child: Icon(Icons.add),
       ),
       
-       body: ListView.builder(
-         itemCount: moodLogs.length,
-         itemBuilder: (context, index) => MoodLogTile(
-           date: moodLogs[index][0],
-           mood: moodLogs[index][1],
-           moodColor: moodLogs[index][2],
-           onDelete: (context) => deleteMoodLog(index),
-           onUpdate: (context) => updateMoodLog(index),
-         ),
-       ),
+       body: StreamBuilder(
+        stream: moodDatabase.moodsTable.stream(primaryKey: ['id']), 
+        builder: (context, snapshot){
+          if(!snapshot.hasData){
+            return Center(child: Text('Loading...'));
+          }
+
+          final moods = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: moods.length,
+            itemBuilder: (context, index){
+              final mood = moods[index];
+              final id = mood['id'];
+              final moodName = mood['mood_name'];
+              final date = mood['date'];
+              final moodHexColor = mood['mood_colour'] ?? '#D3D3D3';
+              return MoodLogTile(
+              date: date,
+              mood: moodName,
+              moodColor: hexToColor(moodHexColor),
+              onDelete: (context) => deleteMoodLog(id),
+              onUpdate: (context) => updateMoodLog(id),
+            );
+            }
+       );
+
+        },
+        )
       
     );
   }

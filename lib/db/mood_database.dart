@@ -1,20 +1,28 @@
+import 'package:better_mood/auth/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MoodDatabase {
     final moodsTable = Supabase.instance.client.from('Moods');
+    final authService = AuthService();
 
     //insert
-    Future<void> insertMood(String moodName) async{
+    Future<void> insertMood(String moodName, String date, String moodColor) async{
+      final uid = authService.getUserUID();
+
       await moodsTable.insert({
-        'mood': moodName,
+        'mood_name': moodName,
+        'mood_colour': moodColor,
+        'date': date,
+        'uid': uid,
         
       });
     }
 
     //update
-    Future<void> updateMood(dynamic moodId, String moodName) async{
+    Future<void> updateMood(dynamic moodId, String moodName, String moodColor) async{
       await moodsTable.update({
-        'mood': moodName,
+        'mood_name': moodName,  
+        'mood_colour': moodColor,
       }).eq('id', moodId);
     }
 

@@ -5,7 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class EmotionsPage extends StatefulWidget {
-  final Function(String, Color) onMoodLogged;
+  final Function(String, String) onMoodLogged;
+
   const EmotionsPage({super.key, required this.onMoodLogged});
 
   @override
@@ -33,40 +34,31 @@ class _EmotionsPageState extends State<EmotionsPage> {
     }
   }
 
-  Color getMoodColor(int value, BuildContext context) {
-    switch (value) {
-      case 0:
-        return Theme.of(context).colorScheme.secondaryContainer; // very happy
-      case 1:
-        return Color(0xFFBAD491); // happy
-      case 2:
-        return Color(0xFFA5BBBD); // neutral
-      case 3:
-        return Theme.of(context).colorScheme.tertiaryContainer; // sad
-      case 4:
-        return Theme.of(context).colorScheme.error; // angry
-      default:
-        return Colors.grey;
-    }
+  String getMoodColor(int value) {
+  switch (value) {
+    case 0: return '#F6C870'; // Very Happy 
+    case 1: return '#BAD491'; // Happy 
+    case 2: return '#A5BBBD'; // Neutral 
+    case 3: return '#E8AFA1'; // Sad 
+    case 4: return '#FA5563'; // Angry 
+    default: return '#D3D3D3';
   }
+}
 
   void _logMood() {
     String mood = getMoodName(_value.toInt());
-    Color moodColor = getMoodColor(_value.toInt(), context);
-    
-    // Show confirmation
+    String moodHexColor = getMoodColor(_value.toInt());
+  
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        content: Text('Mood logged: $mood', style: BTextTheme.lightTextTheme.labelLarge,),
-        duration: Duration(seconds: 2),
-      ),
-    );
+                  SnackBar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    content: Text('Mood logged: $mood', style: BTextTheme.lightTextTheme.labelLarge,),
+                    duration: Duration(seconds: 2),
+                  ),
+              );
+  
+    widget.onMoodLogged(mood, moodHexColor);
     
-    // Call the callback with mood name and color
-    widget.onMoodLogged(mood, moodColor);
-    
-    // Navigate back
     Navigator.pop(context);
   }
 
@@ -81,7 +73,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
               'image/vhappy.png',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => 
-              Icon(FontAwesomeIcons.faceLaugh, color: Colors.black45),
+              Icon(FontAwesomeIcons.faceLaugh, color: Colors.black54, size: 100,),
             ),
           ),
               
@@ -101,7 +93,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
               'image/happy.png',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => 
-              Icon(FontAwesomeIcons.faceSmileBeam, color: Colors.black45),
+              Icon(FontAwesomeIcons.faceSmileBeam, color: Colors.black54, size: 100,),
             ),
           ),
               
@@ -119,10 +111,10 @@ class _EmotionsPageState extends State<EmotionsPage> {
             width: 200,
             height: 200,
             child: Image.asset(
-              'image/neutral.png',
+              'image/Neutral.png',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => 
-              Icon(FontAwesomeIcons.faceMeh, color: Colors.black45),
+              Icon(FontAwesomeIcons.faceMeh, color: Colors.black54, size: 100,),
             ),
           ),
               
@@ -139,10 +131,10 @@ class _EmotionsPageState extends State<EmotionsPage> {
             width: 200,
             height: 200,
             child: Image.asset(
-              'image/sad.png',
+              'image/Sad.png',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => 
-              Icon(FontAwesomeIcons.faceFrown, color: Colors.black45),
+              Icon(FontAwesomeIcons.faceFrown, color: Colors.black54, size: 100,),
             ),
           ),
               
@@ -159,10 +151,10 @@ class _EmotionsPageState extends State<EmotionsPage> {
             width: 200,
             height: 200,
             child: Image.asset(
-              'image/angry.png',
+              'image/Angry.png',
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => 
-              Icon(FontAwesomeIcons.faceAngry, color: Colors.black45),
+              Icon(FontAwesomeIcons.faceAngry, color: Colors.black54, size: 100,),
             ),
           ),
               
@@ -206,6 +198,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
           ),
         )
       ),
+
       body: Stack(
         children: [
           
@@ -219,7 +212,7 @@ class _EmotionsPageState extends State<EmotionsPage> {
               SizedBox(height: 200),
               _emotions[_value.toInt()],
               
-              SizedBox(height: 80),
+              SizedBox(height: 60),
               Slider(
                 activeColor: Theme.of(context).primaryColor,
                 inactiveColor: const Color.fromARGB(255, 213, 226, 233),
