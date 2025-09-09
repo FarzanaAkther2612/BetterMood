@@ -19,6 +19,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   void signOut() async{
     await authService.signOut();
+
     if(mounted){
       Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
     }
@@ -144,6 +145,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ),
 
                   SizedBox(height: 50),
+                  
                   //sign out button
                   Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 5.0),

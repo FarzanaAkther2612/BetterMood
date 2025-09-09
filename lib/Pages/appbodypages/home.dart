@@ -48,7 +48,7 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  void _addMoodLog() {
+  void addMoodLog() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -82,12 +82,13 @@ class _UserHomePageState extends State<UserHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         title: Text("Mood Logs", style: BTextTheme.lightTextTheme.headlineMedium),
       ),
       
       floatingActionButton: FloatingActionButton(
-        onPressed: _addMoodLog,
+        onPressed: addMoodLog,
         backgroundColor: Colors.white,
         foregroundColor: Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),
@@ -111,6 +112,7 @@ class _UserHomePageState extends State<UserHomePage> {
               final moodName = mood['mood_name'];
               final date = mood['date'];
               final moodHexColor = mood['mood_colour'] ?? '#D3D3D3';
+
               return MoodLogTile(
               date: date,
               mood: moodName,
