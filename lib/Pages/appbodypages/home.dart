@@ -56,7 +56,7 @@ class _UserHomePageState extends State<UserHomePage> {
           onMoodLogged: (String mood, String moodHexColor, int moodValue) async{
             
             DateTime now = DateTime.now();
-            String date = "${now.day} ${_getMonthName(now.month)}, ${now.year}";
+            String date = "${now.day} ${getMonthName(now.month)}, ${now.year}";
             
               await moodDatabase.insertMood(mood, date, moodHexColor, moodValue);
             
@@ -66,7 +66,7 @@ class _UserHomePageState extends State<UserHomePage> {
     );
   }
 
-  String _getMonthName(int month) {
+  String getMonthName(int month) {
     const months = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
