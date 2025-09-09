@@ -1,3 +1,4 @@
+import 'package:better_mood/Pages/homepage.dart';
 import 'package:better_mood/Pages/signup_page.dart';
 import 'package:better_mood/auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,11 @@ class _LoginPageState extends State<LoginPage> {
     //attempt login
     try{
       await authService.signInWithEmailPassword(email, password);
+
+      if(mounted){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> Homepage()));
+      }
+      
     }
 
     catch(e){

@@ -18,8 +18,11 @@ class _UserCalenderPageState extends State<UserCalenderPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final uid = authService.getUserUID();
+    
     return StreamBuilder(
-      stream: moodDatabase.moodsTable.stream(primaryKey: ['id']), 
+      stream: moodDatabase.moodsTable.stream(primaryKey: ['id']).eq('uid', uid!), 
         builder: (context, snapshot){
           if(!snapshot.hasData){
             return Center(child: Text('Loading...'));

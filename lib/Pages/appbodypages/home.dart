@@ -95,7 +95,7 @@ class _UserHomePageState extends State<UserHomePage> {
       ),
       
        body: StreamBuilder(
-        stream: moodDatabase.moodsTable.stream(primaryKey: ['id']), 
+        stream: moodDatabase.moodsTable.stream(primaryKey: ['id']).eq('uid', uid!), 
         builder: (context, snapshot){
           if(!snapshot.hasData){
             return Center(child: Text('Loading...'));

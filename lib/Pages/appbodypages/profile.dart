@@ -1,4 +1,6 @@
 
+import 'package:better_mood/Pages/login_page.dart';
+import 'package:better_mood/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:better_mood/Theme/Text%20Theme/text_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,13 +13,30 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
+
+
+  final authService = AuthService();
+
+  void signOut() async{
+    await authService.signOut();
+    if(mounted){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
+    final userEmail = authService.getUserEmail();
+
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-         
+
+         //title
           Row(
             children: [
               Padding(
@@ -33,6 +52,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           ),
 
           SizedBox(height: 50),
+
           Expanded(
             child: 
             Container(
@@ -44,66 +64,34 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   top: Radius.circular(60),
                 ),
             ),
+
+            //profile info
             child: Column(
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: 50),
 
                  Row(
+                  
                   children: [
                     Padding(
-                    padding: EdgeInsets.all(30),
+                    padding: EdgeInsets.only(left: 30, top: 30),
                     child: Align(
                     alignment: Alignment.centerLeft,
                     child: CircleAvatar(
-                      radius: 30,
+                      backgroundColor: Colors.transparent,
+                      radius: 40,
+                      backgroundImage: AssetImage('image/pfp.png'),
                     ),
                     ),
                     ),
                     
-                    Text("user_email@gmail.com", style: BTextTheme.lightTextTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic)),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, top: 30),
+                      child: Text(userEmail.toString(), style: BTextTheme.lightTextTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic)),
+                    ),
                   ],
                  ),
-                SizedBox(height: 15),
-
-                //entries log row
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 170,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("15", style: BTextTheme.lightTextTheme.headlineSmall),
-                          Text("Saved entries", style: BTextTheme.lightTextTheme.bodyMedium?.copyWith(color: Colors.black45)),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      width: 170,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("5", style: BTextTheme.lightTextTheme.headlineSmall),
-                          Text("Streak days", style: BTextTheme.lightTextTheme.bodyMedium?.copyWith(color: Colors.black45)),
-                        ],
-                      ),
-                    ),
-                  ]
-                  ),
+                
 
                   SizedBox(height: 30),
 
@@ -155,11 +143,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ),
                   ),
 
+                  SizedBox(height: 50),
                   //sign out button
                   Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 5.0),
                           child: TextButton(
-                            onPressed: (){}, 
+                            onPressed: signOut, 
                             style: TextButton.styleFrom(
                               fixedSize: Size(290, 50),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(30)),

@@ -39,8 +39,11 @@ class _SignupPagState extends State<SignupPage> {
     try{
       await authService.signUpWithEmailPassword(email, password);
 
-      //pop this sign up page
-      Navigator.pop(context);
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Registered successfully")));
+        Navigator.pop(context);
+      }
+      
     }
     catch(e){
       if(mounted){

@@ -1,4 +1,5 @@
 import 'package:better_mood/Pages/homepage.dart';
+import 'package:better_mood/Screens/splash_screen.dart';
 import 'package:better_mood/Theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: lightMode,
       darkTheme: darkMode,
-      home: Homepage(),
+      home: SplashScreen(),
     );
   }
 }

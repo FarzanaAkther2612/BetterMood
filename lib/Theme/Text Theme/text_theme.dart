@@ -25,7 +25,7 @@ class BTextTheme{
     
     titleLarge: GoogleFonts.albertSans(
       fontSize: 20.0,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w700,
       color: Colors.black,
     ),
     titleMedium: GoogleFonts.albertSans(
@@ -50,7 +50,7 @@ class BTextTheme{
       color: Colors.black,
     ),
     bodySmall: GoogleFonts.hind(
-      fontSize: 12.0,
+      fontSize: 14.0,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
